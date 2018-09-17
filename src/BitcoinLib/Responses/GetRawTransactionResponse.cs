@@ -1,9 +1,9 @@
 ﻿// Copyright (c) 2014 - 2016 George Kimionis
 // See the accompanying file LICENSE for the Software License Aggrement
 
-using System.Collections.Generic;
 using BitcoinLib.Responses.Bridges;
 using BitcoinLib.Responses.SharedComponents;
+using System.Collections.Generic;
 
 namespace BitcoinLib.Responses
 {
@@ -19,5 +19,7 @@ namespace BitcoinLib.Responses
         public uint Time { get; set; }
         public uint BlockTime { get; set; }
         public string TxId { get; set; }
+        public int Size { set; get; }
+        public int VSize { set; get; }
     }
 }
