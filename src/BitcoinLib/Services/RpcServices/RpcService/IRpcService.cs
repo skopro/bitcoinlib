@@ -1,11 +1,11 @@
 ﻿// Copyright (c) 2014 - 2016 George Kimionis
 // See the accompanying file LICENSE for the Software License Aggrement
 
-using System.Collections.Generic;
 using BitcoinLib.Requests.AddNode;
 using BitcoinLib.Requests.CreateRawTransaction;
 using BitcoinLib.Requests.SignRawTransaction;
 using BitcoinLib.Responses;
+using System.Collections.Generic;
 
 namespace BitcoinLib.Services.RpcServices.RpcService
 {
@@ -14,7 +14,8 @@ namespace BitcoinLib.Services.RpcServices.RpcService
         #region Blockchain
 
         string GetBestBlockHash();
-        GetBlockResponse GetBlock(string hash, bool verbose = true);
+        GetBlockResponseWithTransactionIDs GetBlockWithTransactionIDs(string hash);
+        GetBlockResponseWithTransactions GetBlockWithTransactions(string hash);
         GetBlockchainInfoResponse GetBlockchainInfo();
         uint GetBlockCount();
         string GetBlockHash(long index);

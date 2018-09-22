@@ -1,9 +1,6 @@
 ﻿// Copyright (c) 2014 - 2016 George Kimionis
 // See the accompanying file LICENSE for the Software License Aggrement
 
-using System;
-using System.Collections.Generic;
-using System.Linq;
 using BitcoinLib.Requests.AddNode;
 using BitcoinLib.Requests.CreateRawTransaction;
 using BitcoinLib.Requests.SignRawTransaction;
@@ -12,6 +9,9 @@ using BitcoinLib.RPC.Connector;
 using BitcoinLib.RPC.Specifications;
 using BitcoinLib.Services.Coins.Base;
 using Newtonsoft.Json.Linq;
+using System;
+using System.Collections.Generic;
+using System.Linq;
 
 namespace BitcoinLib.Services
 {
@@ -145,9 +145,13 @@ namespace BitcoinLib.Services
             return _rpcConnector.MakeRequest<string>(RpcMethods.getbestblockhash);
         }
 
-        public GetBlockResponse GetBlock(string hash, bool verbose)
+        public GetBlockResponseWithTransactionIDs GetBlockWithTransactionIDs(string hash)
         {
-            return _rpcConnector.MakeRequest<GetBlockResponse>(RpcMethods.getblock, hash, verbose);
+            return _rpcConnector.MakeRequest<GetBlockResponseWithTransactionIDs>(RpcMethods.getblock, hash, 1);
+        }
+        public GetBlockResponseWithTransactions GetBlockWithTransactions(string hash)
+        {
+            return _rpcConnector.MakeRequest<GetBlockResponseWithTransactions>(RpcMethods.getblock, hash, 2);
         }
 
         public GetBlockchainInfoResponse GetBlockchainInfo()
@@ -246,7 +250,7 @@ namespace BitcoinLib.Services
 
             if (!verbose)
             {
-                var rpcResponseAsArray = (JArray) rpcResponse;
+                var rpcResponseAsArray = (JArray)rpcResponse;
 
                 foreach (string txId in rpcResponseAsArray)
                 {
@@ -256,7 +260,7 @@ namespace BitcoinLib.Services
                 return getRawMemPoolResponse;
             }
 
-            IList<KeyValuePair<string, JToken>> rpcResponseAsKvp = (new EnumerableQuery<KeyValuePair<string, JToken>>(((JObject) (rpcResponse)))).ToList();
+            IList<KeyValuePair<string, JToken>> rpcResponseAsKvp = (new EnumerableQuery<KeyValuePair<string, JToken>>(((JObject)(rpcResponse)))).ToList();
             IList<JToken> children = JObject.Parse(rpcResponse.ToString()).Children().ToList();
 
             for (var i = 0; i < children.Count(); i++)
@@ -536,7 +540,8 @@ namespace BitcoinLib.Services
             {
                 transactions.Add(new
                 {
-                    txid = listUnspentResponse.TxId, vout = listUnspentResponse.Vout
+                    txid = listUnspentResponse.TxId,
+                    vout = listUnspentResponse.Vout
                 });
             }
 

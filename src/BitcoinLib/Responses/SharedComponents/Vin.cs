@@ -6,8 +6,9 @@ namespace BitcoinLib.Responses.SharedComponents
     public class Vin
     {
         public string TxId { get; set; }
-        public string Vout { get; set; }
+        public int Vout { get; set; }
         public ScriptSig ScriptSig { get; set; }
+        public string[] TxinWitness{ set; get; }
         public string CoinBase { get; set; }
         public string Sequence { get; set; }
     }
